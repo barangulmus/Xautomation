@@ -66,51 +66,62 @@ namespace TwitterOtomasyon
                     System.Threading.Thread.Sleep(10000);
                     driver.Navigate().Refresh();
                     System.Threading.Thread.Sleep(10000);
-                    if (r3 == true)
-                    {
-                        if (r1 == true)
-                        {
-                            for (int i = 1; i < 10; i++)
-                            {
-                                By reposthere = By.XPath($"((//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv'])[{i}]//a[@style='text-overflow: unset; color: rgb(113, 118, 123);' and starts-with(@id, 'id__')])");
-                                if (driver.FindElements(reposthere).Count>0)
-                                {
-                                    IWebElement repostdel = driver.FindElement(By.XPath($"((//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv'])[{i}]//div[@role='button'])[3]"));
-                                    repostdel.Click();
-                                    System.Threading.Thread.Sleep(1000);
-                                    IWebElement yestelmyrepost = driver.FindElement(By.XPath("(//div[@role='menuitem'])"));
-                                    yestelmyrepost.Click();
-                                    Thread.Sleep(3000);
-                                }
-                                else
-                                {
-                                    IWebElement rightbtn = driver.FindElement(By.XPath($"((//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv'])[{i}]//div[@role='button'])[1]"));
-                                    rightbtn.Click();
-                                    System.Threading.Thread.Sleep(2000);
-                                    IWebElement delbtn = driver.FindElement(By.XPath("//div[@role='menuitem'][1]"));
-                                    delbtn.Click();
-                                    System.Threading.Thread.Sleep(500);
-                                    IWebElement delete = driver.FindElement(By.XPath("//div[@role='button' and @data-testid='confirmationSheetConfirm']"));
-                                    delete.Click();
-                                    System.Threading.Thread.Sleep(2000);
-                                }
-                                if (i % 3 == 0)
-                                {
-                                    IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+                    if (r3)
+{
+    if (r1)
+    {
+        for (int i = 1; i < postCount; i++)
+        {
+            try
+            {
+                By reposthere = By.XPath($"((//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv'])[{i}]//a[@style='text-overflow: unset; color: rgb(113, 118, 123);' and starts-with(@id, 'id__')])");
+                if (driver.FindElements(reposthere).Count > 0)
+                {
+                    IWebElement repostdel = driver.FindElement(By.XPath($"((//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv'])[{i}]//div[@role='button'])[3]"));
+                    repostdel.Click();
+                    System.Threading.Thread.Sleep(1000);
+                    IWebElement yestelmyrepost = driver.FindElement(By.XPath("(//div[@role='menuitem'])"));
+                    yestelmyrepost.Click();
+                    Thread.Sleep(3000);
+                }
+                else
+                {
+                    IWebElement rightbtn = driver.FindElement(By.XPath($"((//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv'])[{i}]//div[@role='button'])[1]"));
+                    rightbtn.Click();
+                    System.Threading.Thread.Sleep(2000);
+                    IWebElement delbtn = driver.FindElement(By.XPath("//div[@role='menuitem'][1]"));
+                    delbtn.Click();
+                    System.Threading.Thread.Sleep(500);
+                    IWebElement delete = driver.FindElement(By.XPath("//div[@role='button' and @data-testid='confirmationSheetConfirm']"));
+                    delete.Click();
+                    System.Threading.Thread.Sleep(2000);
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("bir hata ile karşılaşıldı");
+                throw;
+            }
 
-                                    // Sayfanın yüksekliğini al
-                                    long pageHeight = (long)js.ExecuteScript("return Math.max( document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight);");
 
-                                    // Yüzde 70 kadar aşağı kaydır
-                                    long scrollTo = (long)(pageHeight * 0.6);
-                                    js.ExecuteScript($"window.scrollTo(0, {scrollTo})");
+            
+            if (i % 3 == 0)
+            {
+                IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
 
-                                    System.Threading.Thread.Sleep(5000);
-                                }
+                // Sayfanın yüksekliğini al
+                long pageHeight = (long)js.ExecuteScript("return Math.max( document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight);");
 
-                            }
-                        }
-                    }   
+                // Yüzde 70 kadar aşağı kaydır
+                long scrollTo = (long)(pageHeight * 0.6);
+                js.ExecuteScript($"window.scrollTo(0, {scrollTo})");
+
+                System.Threading.Thread.Sleep(5000);
+            }
+            z++;
+        }
+    }
+}
                 }
             }
             else
