@@ -1,4 +1,4 @@
-﻿using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using OpenQA.Selenium.Interactions;
 using System.Threading;
+using System.Text.RegularExpressions;
 
 namespace TwitterOtomasyon
 {
@@ -31,7 +32,7 @@ namespace TwitterOtomasyon
                 textBox1.Focus();
             }
         }
-
+        int z;
         private void button1_Click(object sender, EventArgs e)
         {
             bool r1 = radioButton1.Checked;
@@ -41,9 +42,9 @@ namespace TwitterOtomasyon
             bool r4 = radioButton4.Checked;
             bool r5 = radioButton5.Checked;
             bool r6 = radioButton6.Checked;
-            if ((r3 == true || r4 == true|| r5 == true || r6==true) && (r1 == true || r2 == true))
+            if ((r3 == true || r4 == true || r5 == true || r6 == true) && (r1 == true || r2 == true))
             {
-                DialogResult msg= MessageBox.Show("Bu işlem biraz zaman alabilir, devam etmek istiyor musunuz? \n Ayrıca Programın düzgün çalışabilmesi için program çalışırken mouse ve klavye kullanmayınız!", "Uyarı", MessageBoxButtons.YesNo);
+                DialogResult msg = MessageBox.Show("Bu işlem biraz zaman alabilir, devam etmek istiyor musunuz? \n Ayrıca Programın düzgün çalışabilmesi için program çalışırken mouse ve klavye kullanmayınız!", "Uyarı", MessageBoxButtons.YesNo);
                 if (msg == DialogResult.Yes)
                 {
                     IWebDriver driver = new ChromeDriver();
@@ -53,75 +54,112 @@ namespace TwitterOtomasyon
                     IWebElement username = driver.FindElement(By.CssSelector("input[name='text']"));
                     username.Click();
                     System.Threading.Thread.Sleep(3000);
-                    username.SendKeys(form1Instance.loginInfo.username);
+                    //username.SendKeys(form1Instance.loginInfo.username);
+                    username.SendKeys("KodArsiviHesabi");
                     System.Threading.Thread.Sleep(100);
+
                     SendKeys.Send("{ENTER}");
                     System.Threading.Thread.Sleep(2000);
-                    Clipboard.SetText(form1Instance.loginInfo.password);
+                    //Clipboard.SetText(form1Instance.loginInfo.password);
+                    Clipboard.SetText("(sqlNp*?*?/+21);");
                     SendKeys.Send("^v");
                     System.Threading.Thread.Sleep(100);
                     SendKeys.Send("{ENTER}");
                     System.Threading.Thread.Sleep(7000);
-                    driver.Navigate().GoToUrl("https://twitter.com/" + form1Instance.loginInfo.username);
+                    //driver.Navigate().GoToUrl("https://twitter.com/" + form1Instance.loginInfo.username);
+                    driver.Navigate().GoToUrl("https://twitter.com/" + "KodArsiviHesabi");
                     System.Threading.Thread.Sleep(10000);
                     driver.Navigate().Refresh();
                     System.Threading.Thread.Sleep(10000);
+                    IJavaScriptExecutor sss = (IJavaScriptExecutor)driver;
+                    // Sayfanın yüksekliğini al
+                    long aaa = (long)sss.ExecuteScript("return Math.max( document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight);");
+                    // Yüzde 95 kadar aşağı kaydır
+                    long bbb = (long)(aaa * 0.12);
+                    sss.ExecuteScript($"window.scrollTo(0, {bbb})");
+
+                    System.Threading.Thread.Sleep(5000);
                     if (r3)
-{
-    if (r1)
-    {
-        for (int i = 1; i < postCount; i++)
-        {
-            try
-            {
-                By reposthere = By.XPath($"((//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv'])[{i}]//a[@style='text-overflow: unset; color: rgb(113, 118, 123);' and starts-with(@id, 'id__')])");
-                if (driver.FindElements(reposthere).Count > 0)
-                {
-                    IWebElement repostdel = driver.FindElement(By.XPath($"((//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv'])[{i}]//div[@role='button'])[3]"));
-                    repostdel.Click();
-                    System.Threading.Thread.Sleep(1000);
-                    IWebElement yestelmyrepost = driver.FindElement(By.XPath("(//div[@role='menuitem'])"));
-                    yestelmyrepost.Click();
-                    Thread.Sleep(3000);
-                }
-                else
-                {
-                    IWebElement rightbtn = driver.FindElement(By.XPath($"((//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv'])[{i}]//div[@role='button'])[1]"));
-                    rightbtn.Click();
-                    System.Threading.Thread.Sleep(2000);
-                    IWebElement delbtn = driver.FindElement(By.XPath("//div[@role='menuitem'][1]"));
-                    delbtn.Click();
-                    System.Threading.Thread.Sleep(500);
-                    IWebElement delete = driver.FindElement(By.XPath("//div[@role='button' and @data-testid='confirmationSheetConfirm']"));
-                    delete.Click();
-                    System.Threading.Thread.Sleep(2000);
-                }
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("bir hata ile karşılaşıldı");
-                throw;
-            }
+                    {
+                        if (r1)
+                        {
+                            string xpath = "(//div[contains(@class, 'r-3s2u2q r-bcqeeo r-qvutc0 r-37j5jr r-n6v787')])[1]";
+                            string postText = driver.FindElement(By.XPath(xpath)).Text;
 
+                            // Sayısal kısmı almak için regex kullanma
+                             string numericPart = new string(postText.Where(char.IsDigit).ToArray());
+                            if (int.TryParse(numericPart, out int postCount))
+                            {
+                                int postSayisi = postCount;
+                                for (int i = 1; i < postSayisi; i++)
+                                {
+                                    z = i;
+                                    try
+                                    {
+                                        By reposthere = By.XPath($"((//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv'])[{z}]//a[@style='text-overflow: unset; color: rgb(113, 118, 123);' and starts-with(@id, 'id__')])");
+                                        if (driver.FindElements(reposthere).Count > 0)
+                                        {
+                                            IWebElement repostdel = driver.FindElement(By.XPath($"((//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv'])[{z}]//div[@role='button'])[3]"));
+                                            repostdel.Click();
+                                            System.Threading.Thread.Sleep(1000);
+                                            IWebElement yesdelmyrepost = driver.FindElement(By.XPath("(//div[@role='menuitem'])"));
+                                            yesdelmyrepost.Click();
+                                            Thread.Sleep(3000);
+                                            z++;
+                                        }
+                                        else
+                                        {
+                                            By rightbtnhere = By.XPath($"((//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv'])[{z}]//div[@role='button'])[1]");
+                                            if (driver.FindElements(rightbtnhere).Count > 0)
+                                            {
+                                                IWebElement rightbtn = driver.FindElement(rightbtnhere);
+                                                rightbtn.Click();
+                                                System.Threading.Thread.Sleep(2000);
+                                                IWebElement delbtn = driver.FindElement(By.XPath("//div[@role='menuitem'][1]"));
+                                                delbtn.Click();
+                                                System.Threading.Thread.Sleep(500);
+                                                IWebElement delete = driver.FindElement(By.XPath("//div[@role='button' and @data-testid='confirmationSheetConfirm']"));
+                                                delete.Click();
+                                                System.Threading.Thread.Sleep(2000);
+                                                z++;
+                                            }
+                                        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        try
+                                        {
+                                            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
 
-            
-            if (i % 3 == 0)
-            {
-                IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+                                                // Sayfanın yüksekliğini al
+                                                long pageHeight = (long)js.ExecuteScript("return Math.max( document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight);");
 
-                // Sayfanın yüksekliğini al
-                long pageHeight = (long)js.ExecuteScript("return Math.max( document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight);");
+                                                // Yüzde 70 kadar aşağı kaydır
+                                                long scrollTo = (long)(pageHeight * 0.20);
+                                                js.ExecuteScript($"window.scrollTo(0, {scrollTo})");
 
-                // Yüzde 70 kadar aşağı kaydır
-                long scrollTo = (long)(pageHeight * 0.6);
-                js.ExecuteScript($"window.scrollTo(0, {scrollTo})");
-
-                System.Threading.Thread.Sleep(5000);
-            }
-            z++;
-        }
-    }
-}
+                                                System.Threading.Thread.Sleep(5000);
+                                        }
+                                        catch (Exception)
+                                        {
+                                            z = 0;
+                                            throw;
+                                        }
+                                        MessageBox.Show("bir hata ile karşılaşıldı" + ex);
+                                        throw;
+                                    }
+                                    if (i == postSayisi)
+                                    {
+                                        MessageBox.Show("İşlem Tamamlandı");
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                MessageBox.Show("Sayıya dönüştürme başarısız oldu.");
+                            }
+                        }
+                    }
                 }
             }
             else
