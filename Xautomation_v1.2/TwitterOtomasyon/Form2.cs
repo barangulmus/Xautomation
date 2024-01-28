@@ -32,7 +32,6 @@ namespace TwitterOtomasyon
                 textBox1.Focus();
             }
         }
-        int z = 1;
         int elsex = 0;
         private void button1_Click(object sender, EventArgs e)
         {
@@ -41,9 +40,7 @@ namespace TwitterOtomasyon
 
             bool r3 = radioButton3.Checked;
             bool r4 = radioButton4.Checked;
-            bool r5 = radioButton5.Checked;
-            bool r6 = radioButton6.Checked;
-            if ((r3 == true || r4 == true || r5 == true || r6 == true) && (r1 == true || r2 == true))
+            if ((r3 == true || r4 == true) && (r1 == true || r2 == true))
             {
                 DialogResult msg = MessageBox.Show("Bu işlem biraz zaman alabilir, devam etmek istiyor musunuz? \n Ayrıca Programın düzgün çalışabilmesi için program çalışırken mouse ve klavye kullanmayınız!", "Uyarı", MessageBoxButtons.YesNo);
                 if (msg == DialogResult.Yes)
@@ -68,17 +65,16 @@ namespace TwitterOtomasyon
                     System.Threading.Thread.Sleep(7000);
                     //driver.Navigate().GoToUrl("https://twitter.com/" + form1Instance.loginInfo.username);
                     driver.Navigate().GoToUrl("https://twitter.com/" + "KodArsiviHesabi");
-                    System.Threading.Thread.Sleep(10000);
+                    System.Threading.Thread.Sleep(7000);
                     driver.Navigate().Refresh();
-                    System.Threading.Thread.Sleep(10000);
+                    System.Threading.Thread.Sleep(7000);
                     IJavaScriptExecutor sss = (IJavaScriptExecutor)driver;
                     // Sayfanın yüksekliğini al
                     long aaa = (long)sss.ExecuteScript("return Math.max( document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight);");
                     // Yüzde 95 kadar aşağı kaydır
-                    long bbb = (long)(aaa * 0.12);
+                    long bbb = (long)(aaa * 0.08);
                     sss.ExecuteScript($"window.scrollTo(0, {bbb})");
-
-                    System.Threading.Thread.Sleep(5000);
+                    System.Threading.Thread.Sleep(2000);
                     if (r3)
                     {
                         if (r1)
@@ -91,24 +87,26 @@ namespace TwitterOtomasyon
                             if (int.TryParse(numericPart, out int postCount))
                             {
                                 int postSayisi = postCount;
-                                for (int i = 1; i < postSayisi; i++)
+                                for (int i = 0; i < postSayisi; i++)
                                 {
                                     try
                                     {
-                                        By reposthere = By.XPath($"(//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv']//div[@class = 'css-175oi2r r-1habvwh r-1wbh5a2 r-1777fci' and descendant::a[@href = '/KodArsiviHesabi']])[1]");
+                                        By reposthere = By.XPath($"(//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div/article and contains(@style, 'transform: translateY({i}px);')] //div[@class = 'css-175oi2r r-1habvwh r-1wbh5a2 r-1777fci' and descendant::a[@href = '/KodArsiviHesabi']])");
                                         if (driver.FindElements(reposthere).Count > 0)
                                         {
-                                            IWebElement repostdel = driver.FindElement(By.XPath($"((//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv'])[1]//div[@role='button' and @data-testid='unretweet'])"));
+                                            IWebElement repostdel = driver.FindElement(By.XPath($"(//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div/article and contains(@style, 'transform: translateY({i}px);')]//div[@role='button' and @data-testid='unretweet'])"));
                                             repostdel.Click();
                                             System.Threading.Thread.Sleep(1000);
                                             IWebElement yesdelmyrepost = driver.FindElement(By.XPath("(//div[@role='menuitem'])"));
                                             yesdelmyrepost.Click();
                                             elsex = 0;
-                                            Thread.Sleep(3000);
+                                            Thread.Sleep(1000);
+                                            //css-1qaijid r-bcqeeo r-qvutc0 r-poiln3
+                                            //css-1qaijid r-bcqeeo r-qvutc0 r-poiln3
                                         }
                                         else
                                         {
-                                            By rightbtnhere = By.XPath($"(//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv']//div[@class = 'css-175oi2r r-1igl3o0 r-qklmqi r-1adg3ll r-1ny4l3l' and descendant::div[@data-testid = 'UserAvatar-Container-KodArsiviHesabi']])[1]//div[@role='button'][1]");
+                                            By rightbtnhere = By.XPath($"(//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div/article and contains(@style, 'transform: translateY({i}px);')]//div[@class = 'css-175oi2r r-1igl3o0 r-qklmqi r-1adg3ll r-1ny4l3l' and descendant::div[@data-testid = 'UserAvatar-Container-KodArsiviHesabi']]//div[@role='button'][1])");
                                             if (driver.FindElements(rightbtnhere).Count > 0)
                                             {
                                                 IWebElement rightbtn = driver.FindElement(rightbtnhere);
@@ -121,14 +119,13 @@ namespace TwitterOtomasyon
                                                     System.Threading.Thread.Sleep(500);
                                                     IWebElement delete = driver.FindElement(By.XPath("//div[@role='button' and @data-testid='confirmationSheetConfirm']"));
                                                     delete.Click();
-                                                    System.Threading.Thread.Sleep(2000);
+                                                    System.Threading.Thread.Sleep(1000);
                                                     elsex = 0;
                                                 }
                                                 else
                                                 {
                                                     elsex++;
                                                     driver.Navigate().Refresh();
-                                                    z--;
                                                     i--;
                                                 }
                                             }
@@ -137,7 +134,6 @@ namespace TwitterOtomasyon
                                                 elsex++;
                                                 if (elsex == 1)
                                                 {
-                                                    z--;
                                                     i--;
                                                 }
                                                 if (elsex == 2)
@@ -150,21 +146,17 @@ namespace TwitterOtomasyon
                                                     // Yüzde 70 kadar aşağı kaydır
                                                     long scrollTo = (long)(pageHeight * 0.20);
                                                     js.ExecuteScript($"window.scrollTo(0, {scrollTo})");
-                                                    z--;
                                                     i--;
                                                     System.Threading.Thread.Sleep(2000);
                                                 }
                                                 if (elsex == 3)
                                                 {
-                                                    z = 0;
                                                     System.Threading.Thread.Sleep(6000);
-                                                    z--;
                                                     i--;
                                                 }
                                                 if (elsex == 4)
                                                 {
                                                     driver.Navigate().Refresh();
-                                                    z = 0;
                                                     i--;
                                                     System.Threading.Thread.Sleep(6000);
                                                     elsex = 0;
@@ -179,7 +171,7 @@ namespace TwitterOtomasyon
                                     }
                                     finally
                                     {
-                                        z++;
+                                        System.Threading.Thread.Sleep(500);
                                     }
 
                                     if (i == postSayisi - 1) // Döngü sona erdiğinde
