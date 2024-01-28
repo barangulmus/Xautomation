@@ -53,18 +53,18 @@ namespace TwitterOtomasyon
                     username.Click();
                     System.Threading.Thread.Sleep(3000);
                     //username.SendKeys(form1Instance.loginInfo.username);
-                    username.SendKeys("KodArsiviHesabi");
+                    username.SendKeys("yourusername");
                     System.Threading.Thread.Sleep(100);
                     SendKeys.Send("{ENTER}");
                     System.Threading.Thread.Sleep(2000);
                     //Clipboard.SetText(form1Instance.loginInfo.password);
-                    Clipboard.SetText("sanane");
+                    Clipboard.SetText("yourpassword");
                     SendKeys.Send("^v");
                     System.Threading.Thread.Sleep(100);
                     SendKeys.Send("{ENTER}");
                     System.Threading.Thread.Sleep(7000);
                     //driver.Navigate().GoToUrl("https://twitter.com/" + form1Instance.loginInfo.username);
-                    driver.Navigate().GoToUrl("https://twitter.com/" + "KodArsiviHesabi");
+                    driver.Navigate().GoToUrl("https://twitter.com/" + "yourusername");
                     System.Threading.Thread.Sleep(7000);
                     driver.Navigate().Refresh();
                     System.Threading.Thread.Sleep(7000);
@@ -84,12 +84,6 @@ namespace TwitterOtomasyon
                             {
                                 for (int i = 0; i < postCount; i++)
                                 {
-                                    //(//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div/article]//div[@class = 'css-175oi2r r-1igl3o0 r-qklmqi r-1adg3ll r-1ny4l3l'])[1]
-                                    //(//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div/article]//div[@class = 'css-175oi2r r-1igl3o0 r-qklmqi r-1adg3ll r-1ny4l3l'])[3]
-                                    //(//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div/article]//div[@class = 'css-175oi2r r-1igl3o0 r-qklmqi r-1adg3ll r-1ny4l3l'])[3]
-                                    //(//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div/article]//div[@class = 'css-175oi2r r-1igl3o0 r-qklmqi r-1adg3ll r-1ny4l3l'])[3]
-                                    //By x = By.XPath("(//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div/article]//div[@class = 'css-175oi2r r-1igl3o0 r-qklmqi r-1adg3ll r-1ny4l3l'])[3]");
-
                                     try
                                     {
                                         By post = By.XPath("(//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div/article]//div[@class = 'css-175oi2r r-1igl3o0 r-qklmqi r-1adg3ll r-1ny4l3l'])[1]");
@@ -97,10 +91,10 @@ namespace TwitterOtomasyon
                                         {
                                             IWebElement postElement = driver.FindElement(post);
                                             // post elementinin altındaki p elementini bulma
-                                            By rElement = By.XPath("(//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div/article]//div[@class = 'css-175oi2r r-1igl3o0 r-qklmqi r-1adg3ll r-1ny4l3l'])[1]//article//a[@href='/KodArsiviHesabi' and @dir]");
+                                            By rElement = By.XPath("(//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div/article]//div[@class = 'css-175oi2r r-1igl3o0 r-qklmqi r-1adg3ll r-1ny4l3l'])[1]//article//a[@href='/yourusername' and @dir]");
                                             if (driver.FindElements(rElement).Count > 0)
                                             {//retwet var ise
-                                                IWebElement unrepost = driver.FindElement(By.XPath("(//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div//article//a[@href='/KodArsiviHesabi' and @dir]])[1]//div[@data-testid='unretweet']"));
+                                                IWebElement unrepost = driver.FindElement(By.XPath("(//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div//article//a[@href='/yourusername' and @dir]])[1]//div[@data-testid='unretweet']"));
                                                 unrepost.Click();
                                                 System.Threading.Thread.Sleep(1000);
                                                 IWebElement yesdelmyrepost = driver.FindElement(By.XPath("(//div[@role='menuitem'])"));
@@ -122,7 +116,7 @@ namespace TwitterOtomasyon
                                             }
                                             if (i % 3 == 0) { js.ExecuteScript("window.scrollBy(0,500);"); }
                                         }
-                                        /*By reposthere = By.XPath($"(//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div/article and contains(@style, 'transform: translateY({i}px);')] //div[@class = 'css-175oi2r r-1habvwh r-1wbh5a2 r-1777fci' and descendant::a[@href = '/KodArsiviHesabi']])");
+                                        /*By reposthere = By.XPath($"(//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div/article and contains(@style, 'transform: translateY({i}px);')] //div[@class = 'css-175oi2r r-1habvwh r-1wbh5a2 r-1777fci' and descendant::a[@href = '/yourusername']])");
                                         if (driver.FindElements(reposthere).Count > 0)
                                         {
                                             IWebElement repostdel = driver.FindElement(By.XPath($"(//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div/article and contains(@style, 'transform: translateY({i}px);')]//div[@role='button' and @data-testid='unretweet'])"));
@@ -135,7 +129,7 @@ namespace TwitterOtomasyon
                                         }
                                         else
                                         {
-                                            By rightbtnhere = By.XPath($"(//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div/article and contains(@style, 'transform: translateY({i}px);')]//div[@class = 'css-175oi2r r-1igl3o0 r-qklmqi r-1adg3ll r-1ny4l3l' and descendant::div[@data-testid = 'UserAvatar-Container-KodArsiviHesabi']]//div[@role='button'][1])");
+                                            By rightbtnhere = By.XPath($"(//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div/article and contains(@style, 'transform: translateY({i}px);')]//div[@class = 'css-175oi2r r-1igl3o0 r-qklmqi r-1adg3ll r-1ny4l3l' and descendant::div[@data-testid = 'UserAvatar-Container-yourusername']]//div[@role='button'][1])");
                                             if (driver.FindElements(rightbtnhere).Count > 0)
                                             {
                                                 IWebElement rightbtn = driver.FindElement(rightbtnhere);
@@ -222,12 +216,12 @@ namespace TwitterOtomasyon
             username.Click();
             System.Threading.Thread.Sleep(3000);
             //username.SendKeys(form1Instance.loginInfo.username);
-            username.SendKeys("KodArsiviHesabi");
+            username.SendKeys("yourusername");
             System.Threading.Thread.Sleep(100);
             SendKeys.Send("{ENTER}");
             System.Threading.Thread.Sleep(2000);
             //Clipboard.SetText(form1Instance.loginInfo.password);
-            Clipboard.SetText("(sqlNp*?*?/+21);");
+            Clipboard.SetText("yourpassword");
             SendKeys.Send("^v");
             System.Threading.Thread.Sleep(100);
             SendKeys.Send("{ENTER}");
