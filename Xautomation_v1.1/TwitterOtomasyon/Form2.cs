@@ -55,19 +55,19 @@ namespace TwitterOtomasyon
                     username.Click();
                     System.Threading.Thread.Sleep(3000);
                     //username.SendKeys(form1Instance.loginInfo.username);
-                    username.SendKeys("KodArsiviHesabi");
+                    username.SendKeys("yourusername");
                     System.Threading.Thread.Sleep(100);
 
                     SendKeys.Send("{ENTER}");
                     System.Threading.Thread.Sleep(2000);
                     //Clipboard.SetText(form1Instance.loginInfo.password);
-                    Clipboard.SetText("(sqlNp*?*?/+21);");
+                    Clipboard.SetText("yourpassword");
                     SendKeys.Send("^v");
                     System.Threading.Thread.Sleep(100);
                     SendKeys.Send("{ENTER}");
                     System.Threading.Thread.Sleep(7000);
                     //driver.Navigate().GoToUrl("https://twitter.com/" + form1Instance.loginInfo.username);
-                    driver.Navigate().GoToUrl("https://twitter.com/" + "KodArsiviHesabi");
+                    driver.Navigate().GoToUrl("https://twitter.com/" + "yourusername");
                     System.Threading.Thread.Sleep(10000);
                     driver.Navigate().Refresh();
                     System.Threading.Thread.Sleep(10000);
