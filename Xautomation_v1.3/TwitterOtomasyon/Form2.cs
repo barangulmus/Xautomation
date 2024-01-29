@@ -1,4 +1,4 @@
-﻿using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
@@ -33,6 +33,7 @@ namespace TwitterOtomasyon
             }
         }
         int elsex = 0;
+        string numericPart;
         private void button1_Click(object sender, EventArgs e)
         {
             bool r1 = radioButton1.Checked;
@@ -62,8 +63,10 @@ namespace TwitterOtomasyon
                     SendKeys.Send("^v");
                     System.Threading.Thread.Sleep(100);
                     SendKeys.Send("{ENTER}");
+                    Clipboard.SetText(" ");
                     System.Threading.Thread.Sleep(7000);
-                    driver.Navigate().GoToUrl("https://twitter.com/" + us + "/with_replies");
+                    if (r4) { driver.Navigate().GoToUrl("https://twitter.com/" + us + "/likes"); }
+                    if (r3) { driver.Navigate().GoToUrl("https://twitter.com/" + us + "/with_replies"); }
                     System.Threading.Thread.Sleep(7000);
                     driver.Navigate().Refresh();
                     System.Threading.Thread.Sleep(7000);
@@ -76,72 +79,129 @@ namespace TwitterOtomasyon
                         {
                             string xpath = "(//div[contains(@class, 'r-3s2u2q r-bcqeeo r-qvutc0 r-37j5jr r-n6v787')])[1]";
                             string postText = driver.FindElement(By.XPath(xpath)).Text;
-                            string numericPart = new string(postText.Where(char.IsDigit).ToArray());
-                            if (int.TryParse(numericPart, out int postCount))
+                            numericPart = new string(postText.Where(char.IsDigit).ToArray());
+                        }
+                        if (r2)
+                        {
+                            numericPart = textBox1.Text;
+                        }
+                        if (int.TryParse(numericPart, out int postCount))
+                        {
+                            for (int i = 0; i < postCount; i++)
                             {
-                                for (int i = 0; i < postCount; i++)
+                                try
                                 {
-                                    try
+                                    By post = By.XPath("(//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div/article]//div[@class = 'css-175oi2r r-1igl3o0 r-qklmqi r-1adg3ll r-1ny4l3l'])[1]");
+                                    if (driver.FindElements(post).Count > 0)
                                     {
-                                        By post = By.XPath("(//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div/article]//div[@class = 'css-175oi2r r-1igl3o0 r-qklmqi r-1adg3ll r-1ny4l3l'])[1]");
-                                        if (driver.FindElements(post).Count > 0)
-                                        {
-                                            IWebElement postElement = driver.FindElement(post);
-                                            // post elementinin altındaki p elementini bulma
-                                            By rElement = By.XPath($"(//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div/article]//div[@class = 'css-175oi2r r-1igl3o0 r-qklmqi r-1adg3ll r-1ny4l3l'])[1]//article//a[@href='/{us}' and @dir]");
-                                            if (driver.FindElements(rElement).Count > 0)
-                                            {//retwet var ise
-                                                IWebElement unrepost = driver.FindElement(By.XPath($"(//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div//article//a[@href='/{us}' and @dir]])[1]//div[@data-testid='unretweet']"));
-                                                unrepost.Click();
+                                        IWebElement postElement = driver.FindElement(post);
+                                        // post elementinin altındaki p elementini bulma
+                                        By rElement = By.XPath($"(//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div/article]//div[@class = 'css-175oi2r r-1igl3o0 r-qklmqi r-1adg3ll r-1ny4l3l'])[1]//article//a[@href='/{us}' and @dir]");
+                                        if (driver.FindElements(rElement).Count > 0)
+                                        {//retwet var ise
+                                            IWebElement unrepost = driver.FindElement(By.XPath($"(//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div//article//a[@href='/{us}' and @dir]])[1]//div[@data-testid='unretweet']"));
+                                            unrepost.Click();
+                                            System.Threading.Thread.Sleep(1000);
+                                            IWebElement yesdelmyrepost = driver.FindElement(By.XPath("(//div[@role='menuitem'])"));
+                                            yesdelmyrepost.Click();
+                                            System.Threading.Thread.Sleep(1000);
+                                        }
+                                        else
+                                        {//retweet yok, post var ise
+                                            By pElement = By.XPath("(//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div/article]//div[@class = 'css-175oi2r r-1igl3o0 r-qklmqi r-1adg3ll r-1ny4l3l'])[1]//article//div[@aria-haspopup and @data-testid='caret']");
+                                            if (driver.FindElements(pElement).Count > 0)
+                                            {
+                                                IWebElement delpostElement = driver.FindElement(pElement);
+                                                System.Threading.Thread.Sleep(400);
+                                                delpostElement.Click();
                                                 System.Threading.Thread.Sleep(1000);
-                                                IWebElement yesdelmyrepost = driver.FindElement(By.XPath("(//div[@role='menuitem'])"));
-                                                yesdelmyrepost.Click();
-                                                System.Threading.Thread.Sleep(1000);
-                                            }
-                                            else
-                                            {//retweet yok, post var ise
-                                                By pElement = By.XPath("(//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div/article]//div[@class = 'css-175oi2r r-1igl3o0 r-qklmqi r-1adg3ll r-1ny4l3l'])[1]//article//div[@aria-haspopup and @data-testid='caret']");
-                                                if (driver.FindElements(pElement).Count > 0)
+                                                IWebElement delbtn = driver.FindElement(By.XPath("//div[@role='menuitem'][1]//span"));
+                                                if (delbtn.Text.Length < 10)
                                                 {
-                                                    IWebElement delpostElement = driver.FindElement(pElement);
-                                                    System.Threading.Thread.Sleep(400);
-                                                    delpostElement.Click();
+                                                    delbtn.Click();
+                                                    System.Threading.Thread.Sleep(500);
+                                                    IWebElement delete = driver.FindElement(By.XPath("//div[@role='button' and @data-testid='confirmationSheetConfirm']"));
+                                                    delete.Click();
                                                     System.Threading.Thread.Sleep(1000);
-                                                    IWebElement delbtn = driver.FindElement(By.XPath("//div[@role='menuitem'][1]//span"));
-                                                    if (delbtn.Text.Length < 10)
-                                                    {
-                                                        delbtn.Click();
-                                                        System.Threading.Thread.Sleep(500);
-                                                        IWebElement delete = driver.FindElement(By.XPath("//div[@role='button' and @data-testid='confirmationSheetConfirm']"));
-                                                        delete.Click();
-                                                        System.Threading.Thread.Sleep(1000);
-                                                        elsex = 0;
-                                                    }
+                                                }
+                                                else
+                                                {
+                                                    driver.Navigate().Refresh();
+                                                    System.Threading.Thread.Sleep(7000);
                                                 }
                                             }
-                                            if (i == 5) { js.ExecuteScript("window.scrollBy(0,600);"); }
+                                            else
+                                            {
+                                                driver.Navigate().Refresh();
+                                                System.Threading.Thread.Sleep(7000);
+                                            }
                                         }
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        MessageBox.Show("Bir hata ile karşılaşıldı" + ex);
-                                        throw;
-                                    }
-                                    finally
-                                    {
-                                        System.Threading.Thread.Sleep(500);
-                                    }
-
-                                    if (i == postCount - 1) // Döngü sona erdiğinde
-                                    {
-                                        MessageBox.Show("İşlem Tamamlandı");
+                                        if (i == 5) { js.ExecuteScript("window.scrollBy(0,600);"); }
                                     }
                                 }
+                                catch (Exception ex)
+                                {
+                                    MessageBox.Show("Bir hata ile karşılaşıldı" + ex);
+                                    throw;
+                                }
+                                finally
+                                {
+                                    System.Threading.Thread.Sleep(500);
+                                }
 
+                                if (i == postCount - 1) // Döngü sona erdiğinde
+                                {
+                                    MessageBox.Show("İşlem Tamamlandı");
+                                }
                             }
-                            else
+
+                        }
+                        else
+                        {
+                            MessageBox.Show("Sayıya dönüştürme başarısız oldu.");
+                        }
+                    }
+                    if (r4)
+                    {
+                        if (r1)
+                        {
+                            string xpath = "(//div[contains(@class, 'r-3s2u2q r-bcqeeo r-qvutc0 r-37j5jr r-n6v787')])[1]";
+                            string postText = driver.FindElement(By.XPath(xpath)).Text;
+                            numericPart = new string(postText.Where(char.IsDigit).ToArray());
+                        }
+                        if (r2)
+                        {
+                            numericPart = textBox1.Text;
+                        }
+                        if (int.TryParse(numericPart, out int postCount))
+                        {
+                            for (int j = 0; j < postCount; j++)
                             {
-                                MessageBox.Show("Sayıya dönüştürme başarısız oldu.");
+                                try
+                                {
+                                    By cellInnerDiv = By.XPath("(//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div/article]/div//div[@data-testid='unlike']/ancestor::div[@data-testid='cellInnerDiv'])[1]");
+                                    long height = (long)js.ExecuteScript("return arguments[0].offsetHeight;", driver.FindElement(cellInnerDiv));
+                                    System.Threading.Thread.Sleep(500);
+                                    IWebElement Unlike = driver.FindElement(By.XPath("(//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div/article]/div//div[@data-testid='unlike'])[1]"));
+                                    Unlike.Click();
+                                    System.Threading.Thread.Sleep(800);
+                                    js.ExecuteScript($"window.scrollBy(0, {height});");
+                                }
+                                catch (Exception)
+                                {
+                                    driver.Navigate().Refresh();
+                                    j = 0;
+                                    System.Threading.Thread.Sleep(6000);
+                                    throw;
+                                }
+                                finally
+                                {
+                                    System.Threading.Thread.Sleep(500);
+                                    if (j == postCount - 1)
+                                    {
+
+                                    }
+                                }
                             }
                         }
                     }
