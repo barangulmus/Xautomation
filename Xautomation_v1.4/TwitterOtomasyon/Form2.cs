@@ -13,6 +13,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using OpenQA.Selenium.Interactions;
 using System.Threading;
 using System.Text.RegularExpressions;
+using System.Xml.Schema;
 
 namespace TwitterOtomasyon
 {
@@ -296,11 +297,15 @@ namespace TwitterOtomasyon
             radioButton9.Checked = false;
             radioButton10.Checked = false;
             radioButton10.Enabled = false;
+            radioButton13.Enabled = true;
         }
 
         private void radioButton6_CheckedChanged(object sender, EventArgs e)
         {
-            panel4.Enabled = true;
+            radioButton10.Enabled = true;
+            radioButton9.Enabled = true;
+            radioButton13.Enabled = false;
+            radioButton13.Checked = false;
         }
         List<string> followList = new List<string>();
         private void button6_Click(object sender, EventArgs e)
@@ -409,7 +414,9 @@ namespace TwitterOtomasyon
                         {
                             System.Threading.Thread.Sleep(700);
                             IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
-                            js.ExecuteScript("window.scrollBy(0,65);");
+                            By boy = By.XPath($"((//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div])//div[@data-testid='UserCell']/div/div[2]/div/div/div/div[2]//a[@href='/{PersonText}'])[1]/ancestor::div[@data-testid='cellInnerDiv']");
+                            long height = (long)js.ExecuteScript("return arguments[0].offsetHeight;", driver.FindElement(boy));
+                            js.ExecuteScript($"window.scrollBy(0,{height});");
                         }
 
                     }
@@ -420,17 +427,36 @@ namespace TwitterOtomasyon
             {
                 if (int.TryParse(followNumericPart, out int followCount))
                 {
+                    //ilk kişinin kullanıcı adını bul
                     IWebElement firstPersonText = driver.FindElement(By.XPath("((//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div])//div[@data-testid='UserCell']/div/div[2]/div/div/div/div[2]//a)[1]"));
                     PersonText = firstPersonText.Text.Substring(1);
-                    if (!r13) { followList.Add(PersonText); }
-                    if (r13)
+                    if (!r10) { followList.Add(PersonText); }
+                    if (!r9) { followList.Add(PersonText); }
+                    if (r10)
                     {
-                        By thefollowBYY = By.XPath($"(//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div])//div[@data-testid='UserCell']/div/div[2]/div/div/div/div[2]//a/parent::div/parent::div/parent::div/parent::div/following::div/div/div[@role='button' and contains(@aria-label, '{PersonText}') and not(contains(@data-testid, 'un'))]");
+                        By thefollowBYY = By.XPath($"((//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div])//div[@data-testid='UserCell']/div/div[2]/div/div/div/div[2]//a/parent::div/parent::div/parent::div/parent::div/following::div/div/div)[1]");
                         if (driver.FindElements(thefollowBYY).Count > 0)
                         {
                             System.Threading.Thread.Sleep(500);
-                            IWebElement theFollow = driver.FindElement(By.XPath($"(//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div])//div[@data-testid='UserCell']/div/div[2]/div/div/div/div[2]//a/parent::div/parent::div/parent::div/parent::div/following::div/div/div[@role='button' and contains(@aria-label, '{PersonText}') and not(contains(@data-testid, 'un'))]"));
+                            IWebElement theFollow = driver.FindElement(By.XPath($"(//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div])//div[@data-testid='UserCell']/div/div[2]/div/div/div/div[2]//a/parent::div/parent::div/parent::div/parent::div/following::div/div[@role='button' and contains(@aria-label, '{PersonText}')]"));
                             theFollow.Click();
+                            System.Threading.Thread.Sleep(1000);
+                            IWebElement okUnFollow = driver.FindElement(By.XPath("//div[@data-testid='confirmationSheetConfirm']/div"));
+                            okUnFollow.Click();
+                            followList.Add(PersonText);
+                        }
+                    }
+                    if (r9)
+                    {   
+                        By thefollowBYY = By.XPath($"((//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div])//div[@data-testid='UserCell']/div/div[2]/div/div/div/div[2]//a[@href='/{PersonText}'])/parent::div/following-sibling::div");
+                        if (driver.FindElements(thefollowBYY).Count > 0)
+                        {
+                            System.Threading.Thread.Sleep(500);
+                            IWebElement theFollow = driver.FindElement(By.XPath($"(//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div])//div[@data-testid='UserCell']/div/div[2]/div/div/div/div[2]//a/parent::div/parent::div/parent::div/parent::div/following::div/div[@role='button' and contains(@aria-label, '{PersonText}')]"));
+                            theFollow.Click();
+                            System.Threading.Thread.Sleep(1000);
+                            IWebElement okUnFollow = driver.FindElement(By.XPath("//div[@data-testid='confirmationSheetConfirm']/div"));
+                            okUnFollow.Click();
                             followList.Add(PersonText);
                         }
                     }
@@ -442,31 +468,50 @@ namespace TwitterOtomasyon
                             string XXXPERSONTEXT = PersonText;
                             IWebElement XPerson = driver.FindElement(By.XPath($"(((//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div])//div[@data-testid='UserCell']/div/div[2]/div/div/div/div[2]//a[@href='/{PersonText}'])[1]/ancestor::div[@data-testid='cellInnerDiv']/following-sibling::div//div[@data-testid='UserCell']/div/div[2]/div/div/div/div[2]//a)[1]"));
                             PersonText = XPerson.Text.Substring(1);
-                            if (!r13) { followList.Add(PersonText); }
-                            if (r13)
+                            if (!r10) { followList.Add(PersonText); }
+                            if (!r9) { followList.Add(PersonText); }
+                            if (r10)
                             {
-                                By theFollowBy = By.XPath($"(((//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div])//div[@data-testid='UserCell']/div/div[2]/div/div/div/div[2]//a[@href='/{XXXPERSONTEXT}'])[1]/ancestor::div[@data-testid='cellInnerDiv']/following-sibling::div//div[@data-testid='UserCell']/div/div[2]/div/div/div/div[2]//a/parent::div/parent::div/parent::div/parent::div/following::div/div/div[@role='button' and contains(@aria-label, '{PersonText}') and not(contains(@data-testid, 'un'))])[1]");
+                                By theFollowBy = By.XPath($"(//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div])//div[@data-testid='UserCell']/div/div[2]/div/div/div/div[2]//a/parent::div/parent::div/parent::div/parent::div/following::div/div[@role='button' and contains(@aria-label, '{PersonText}')]");
                                 if (driver.FindElements(theFollowBy).Count > 0)
                                 {
                                     System.Threading.Thread.Sleep(500);
-                                    IWebElement theFollow = driver.FindElement(By.XPath($"(((//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div])//div[@data-testid='UserCell']/div/div[2]/div/div/div/div[2]//a[@href='/{XXXPERSONTEXT}'])[1]/ancestor::div[@data-testid='cellInnerDiv']/following-sibling::div//div[@data-testid='UserCell']/div/div[2]/div/div/div/div[2]//a/parent::div/parent::div/parent::div/parent::div/following::div/div/div[@role='button' and contains(@aria-label, '{PersonText}') and not(contains(@data-testid, 'un'))])[1]"));
+                                    IWebElement theFollow = driver.FindElement(By.XPath($"(((//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div])//div[@data-testid='UserCell']/div/div[2]/div/div/div/div[2]//a[@href='/{XXXPERSONTEXT}'])[1]/ancestor::div[@data-testid='cellInnerDiv']/following-sibling::div//div[@data-testid='UserCell']/div/div[2]/div/div/div/div[2]//a/parent::div/parent::div/parent::div/parent::div/following::div/div[@role='button' and contains(@aria-label, '{PersonText}')])[1]"));
                                     theFollow.Click();
+                                    System.Threading.Thread.Sleep(1000);
+                                    IWebElement okUnFollow = driver.FindElement(By.XPath("//div[@data-testid='confirmationSheetConfirm']/div"));
+                                    okUnFollow.Click();
                                     followList.Add(PersonText);
                                 }
-
+                            }
+                            if (r9)
+                            {
+                                By thefollowBYY = By.XPath($"((//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div])//div[@data-testid='UserCell']/div/div[2]/div/div/div/div[2]//a[@href='/{PersonText}'])/parent::div/following-sibling::div");
+                                if (driver.FindElements(thefollowBYY).Count < 0)
+                                {
+                                    System.Threading.Thread.Sleep(500);
+                                    IWebElement theFollow = driver.FindElement(By.XPath($"(//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div])//div[@data-testid='UserCell']/div/div[2]/div/div/div/div[2]//a/parent::div/parent::div/parent::div/parent::div/following::div/div[@role='button' and contains(@aria-label, '{PersonText}')]"));
+                                    theFollow.Click();
+                                    System.Threading.Thread.Sleep(1000);
+                                    IWebElement okUnFollow = driver.FindElement(By.XPath("//div[@data-testid='confirmationSheetConfirm']/div"));
+                                    okUnFollow.Click();
+                                    followList.Add(PersonText);
+                                }
                             }
                         }
                         catch (Exception ex)
                         {
                             listBox2.DataSource = followList;
-                            MessageBox.Show("Bir Hata İle Karşılaşıldı, \n" + ex);
+                            MessageBox.Show("Bir Hata İle Karşılaşıldı, Bulunan hesap sayısı" + i + " " + PersonText + "\n" + ex);
                             throw;
                         }
                         finally
                         {
                             System.Threading.Thread.Sleep(700);
                             IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
-                            js.ExecuteScript("window.scrollBy(0,65);");
+                            By boy = By.XPath($"((//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div])//div[@data-testid='UserCell']/div/div[2]/div/div/div/div[2]//a[@href='/{PersonText}'])[1]/ancestor::div[@data-testid='cellInnerDiv']");
+                            long height = (long)js.ExecuteScript("return arguments[0].offsetHeight;", driver.FindElement(boy));
+                            js.ExecuteScript($"window.scrollBy(0,{height});");
                         }
 
                     }
