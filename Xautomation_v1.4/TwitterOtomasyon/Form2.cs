@@ -517,27 +517,6 @@ namespace TwitterOtomasyon
                     }
                     listBox2.DataSource = followList;
                 }
-                //By followers = By.XPath("(((//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div])//div[@data-testid='UserCell']/div/div[2]/div/div/div/div[2]//a)[1]//parent::div/parent::div/parent::div/parent::div/following::div/div)[1]");
-                /*
-                  Kişinin altındaki kişide takip et butonu var mı?
-                 (((//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div])//div[@data-testid='UserCell']/div/div[2]/div/div/div/div[2]//a[@href='/HasanBen251732'])[1]/ancestor::div[@data-testid='cellInnerDiv']/following-sibling::div//div[@data-testid='UserCell']/div/div[2]/div/div/div/div[2]//a/parent::div/parent::div/parent::div/parent::div/following::div/div/div[@role='button' and contains(@aria-label, '@bafelkurdi') and not(contains(@data-testid, 'un'))])[1]
-                 
-                 İlk Kişinin Kullanıçı Adını Bulur
-                ((//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div])//div[@data-testid='UserCell']/div/div[2]/div/div/div/div[2]//a)[1]
-                Bu kod ismi belli olan kişinin altındaki kişileri bulur
-                (((//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div])//div[@data-testid='UserCell']/div/div[2]/div/div/div/div[2]//a[@href='/nijatperest'])[1]/ancestor::div[@data-testid='cellInnerDiv']/following-sibling::div//div[@data-testid='UserCell']/div/div[2]/div/div/div/div[2]//a)[1]
-                İsmi Belli olan kiinin altındaki kellinnerdivi bulur
-                ((//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div])//div[@data-testid='UserCell']/div/div[2]/div/div/div/div[2]//a[@href='/alifcoder'])[1]/ancestor::div[@data-testid='cellInnerDiv']/following-sibling::div
-                Takip Edilen Sayısı
-                ((//div[@data-testid='UserName']/following::div/following::div/following::div)[1]/div[1]/a/span/span)[1]
-                Takipçi Sayısı
-                ((//div[@data-testid='UserName']/following::div/following::div/following::div)[1]/div[2]/a/span/span)[1]
-                Seni Takip Ediyor Yazısı Olanlar
-                ((//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div])//div[@data-testid='UserCell']/div/div[2]/div/div/div/div[2]//a/parent::div/following-sibling::div)[1]
-                ((//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div])//div[@data-testid='UserCell']/div/div[2]/div/div/div/div[2]//a/parent::div/following-sibling::div)[1]
-                ((//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div])//div[@data-testid='UserCell']/div/div[2]/div/div/div/div[2]//a[@href='/Evara24'])/parent::div/following-sibling::div
-                ((//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div])//div[@data-testid='UserCell']/div/div[2]/div/div/div/div[2]//a[@href='/Evara24'])/parent::div/following-sibling::div
-                */
             }
         }
         private void button2_Click(object sender, EventArgs e)
