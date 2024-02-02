@@ -430,8 +430,7 @@ namespace TwitterOtomasyon
                     //ilk kişinin kullanıcı adını bul
                     IWebElement firstPersonText = driver.FindElement(By.XPath("((//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div])//div[@data-testid='UserCell']/div/div[2]/div/div/div/div[2]//a)[1]"));
                     PersonText = firstPersonText.Text.Substring(1);
-                    if (!r10) { followList.Add(PersonText); }
-                    if (!r9) { followList.Add(PersonText); }
+                    if (!r10 && !r9) { followList.Add(PersonText); }
                     if (r10)
                     {
                         By thefollowBYY = By.XPath($"((//div[contains(@style, 'position: relative;')]//div[@data-testid='cellInnerDiv' and descendant::div/div])//div[@data-testid='UserCell']/div/div[2]/div/div/div/div[2]//a/parent::div/parent::div/parent::div/parent::div/following::div/div/div)[1]");
