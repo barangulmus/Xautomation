@@ -35,11 +35,14 @@ Xautimation
 └───bin
 │   └───Debug
 │       └───ChromeDriver.exe
+```
+## İletişim
+
+Eğer herhangi bir sorunuz veya geri bildiriminiz varsa, lütfen [email@example.com](mailto:email@example.com) adresi üzerinden bize ulaşın.
 
 ## Görseller
 
 Projeyle ilgili bazı ekran görüntüleri:
 
-![WhatsApp Görsel 2024-02-04 saat 16 51 34_9ee3ecf4](https://github.com/barangulmus/Xautomation/assets/149194958/0b1ad444-647e-4181-854d-bb5fd23e0b57)
-![WhatsApp Görsel 2024-02-04 saat 17 10 06_9c22edcb](https://github.com/barangulmus/Xautomation/assets/149194958/57aeb872-500a-458c-be93-e1ab301b9495)
-
+![WhatsApp Görsel 2024-02-04 saat 16 51 34_760fb4ea](https://github.com/barangulmus/Xautomation/assets/149194958/116f0575-4d22-439f-bfe6-2fd26c3471d6)
+![WhatsApp Görsel 2024-02-04 saat 17 10 06_6357601e](https://github.com/barangulmus/Xautomation/assets/149194958/1a77b8ff-a8a8-4fae-ba06-cba78419fa1a)
