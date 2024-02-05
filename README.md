@@ -38,7 +38,7 @@ Xautimation
 ```
 ## İletişim
 
-Eğer herhangi bir sorunuz veya geri bildiriminiz varsa, lütfen [email@example.com](mailto:email@example.com) adresi üzerinden bize ulaşın.
+Eğer herhangi bir sorunuz veya geri bildiriminiz varsa, lütfen [dev.barangulmus@gmail.com](mailto:dev.barangulmus@gmail.com) adresi üzerinden bize ulaşın.
 
 ## Görseller
 
